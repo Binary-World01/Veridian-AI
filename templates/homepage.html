@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="generation-hub">
+    <h2>Create Anything You Can Imagine</h2>
+    {% if current_user.is_authenticated %}
+        <form action="{{ url_for('generate') }}" method="post" class="generate-form">
+            <textarea name="prompt" placeholder="A photorealistic portrait of a woman, soft natural lighting..." required></textarea>
+            <div class="options-grid">
+                <select name="ratio">
+                    <option value="1:1">Square (1:1)</option>
+                    <option value="16:9">Widescreen (16:9)</option>
+                    <option value="9:16">Portrait (9:16)</option>
+                </select>
+            </div>
+            <label class="toggle-switch">
+                Private
+                <input type="checkbox" name="visibility" value="public" checked>
+                <span class="slider"></span>
+                Public
+            </label>
+            <button type="submit">Generate</button>
+        </form>
+    {% else %}
+        <div class="disabled-prompt-bar">
+            <textarea placeholder="Log in to start creating..." disabled></textarea>
+            <div class="login-prompt">
+                <a href="{{ url_for('login') }}">Login</a> or <a href="{{ url_for('register') }}">Register</a> to create.
+            </div>
+        </div>
+    {% endif %}
+</div>
+<hr>
+<h3>Live Feed</h3>
+<div class="gallery-grid" id="real-time-gallery">
+    {% for image in images %}
+    <div class="gallery-item">
+        <img src="{{ url_for('static', filename=image.public_image_path) }}" alt="{{ image.prompt }}">
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

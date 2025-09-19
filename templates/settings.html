@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2>Settings</h2>
+<div class="form-container">
+    <h3>Parental Controls</h3>
+    <form action="{{ url_for('toggle_parental_controls') }}" method="post" class="toggle-form">
+        <p>When enabled, prompts containing restricted keywords will be blocked.</p>
+        <label class="toggle-switch">
+            Disabled
+            <input type="checkbox" name="parental_control" onchange="this.form.submit()" {% if current_user.parental_control_enabled %}checked{% endif %}>
+            <span class="slider"></span>
+            Enabled
+        </label>
+    </form>
+    <hr>
+    <h3>Change Password</h3>
+    <form action="{{ url_for('change_password') }}" method="post">
+        <input type="password" name="current_password" placeholder="Current Password" required>
+        <input type="password" name="new_password" placeholder="New Password" required>
+        <input type="password" name="confirm_password" placeholder="Confirm New Password" required>
+        <button type="submit">Update Password</button>
+    </form>
+    <hr>
+    <h3>Become an Administrator</h3>
+    <form action="{{ url_for('become_admin') }}" method="post">
+        <input type="password" name="security_code" placeholder="Enter Security Code" required>
+        <button type="submit">Become Admin</button>
+    </form>
+</div>
+{% endblock %}

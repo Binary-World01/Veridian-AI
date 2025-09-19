@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2>My Creations</h2>
+<div class="gallery-grid">
+    {% for creation in creations %}
+    <div class="gallery-item">
+        <img src="{{ url_for('get_user_image', image_id=creation.id) }}" alt="{{ creation.prompt }}">
+        <div class="item-info">
+            <p>"{{ creation.prompt }}"</p>
+            <div class="item-actions">
+                {% if creation.download_status == 'none' %}
+                    <form action="{{ url_for('request_download', image_id=creation.id) }}" method="post">
+                        <button type="submit" class="btn-small">Request Download</button>
+                    </form>
+                {% elif creation.download_status == 'pending' %}
+                    <span>Request Pending</span>
+                {% elif creation.download_status == 'approved' %}
+                    <a href="{{ url_for('download_image', image_id=creation.id) }}" class="btn-small btn-success">Download Now</a>
+                {% else %}
+                    <span>Request Denied</span>
+                {% endif %}
+                <form action="{{ url_for('delete_image', image_id=creation.id) }}" method="post" onsubmit="return confirm('Are you sure you want to move this image to trash?');">
+                    <button type="submit" class="btn-small btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <p>You haven't created any images yet. Go to the homepage to start!</p>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2>Public Gallery</h2>
+<p>Browse creations from the Veridian AI community.</p>
+<div class="gallery-grid">
+    {% for image in images %}
+    <div class="gallery-item">
+        <img src="{{ url_for('static', filename=image.public_image_path) }}" alt="{{ image.prompt }}">
+        <div class="item-info">
+            <p>"{{ image.prompt }}" by {{ image.author.username }}</p>
+        </div>
+    </div>
+    {% else %}
+    <p>No public images have been generated yet.</p>
+    {% endfor %}
+</div>
+{% endblock %}
