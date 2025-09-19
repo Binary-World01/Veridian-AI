@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2>Creations by {{ user.username }}</h2>
+<div class="gallery-grid">
+    {% for creation in creations %}
+    <div class="gallery-item {% if creation.is_deleted_by_user %}deleted-by-user{% endif %}">
+        <img src="{{ url_for('get_user_image', image_id=creation.id) }}" alt="{{ creation.prompt }}">
+        <div class="item-info">
+            {% if creation.is_deleted_by_user %}
+                <p class="deleted-notice"><strong>Deleted by user</strong></p>
+            {% endif %}
+            <p>"{{ creation.prompt }}"</p>
+            <div class="item-actions">
+                <form action="{{ url_for('admin_delete_image', image_id=creation.id) }}" method="post" onsubmit="return confirm('PERMANENTLY DELETE? This cannot be undone.');">
+                    <button type="submit" class="btn-small btn-danger">Delete Permanently</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2>All Users</h2>
+<div class="admin-table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Creations</th>
+                <th>View</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.generations|length }}</td>
+                <td><a href="{{ url_for('admin_user_detail', user_id=user.id) }}" class="btn-small">View Gallery</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
